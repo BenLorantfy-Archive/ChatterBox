@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Author</key>
-	<string>Kango</string>
+	<string>Rivison</string>
 	<key>CFBundleDisplayName</key>
 	<string>ChatterBox</string>
 	<key>CFBundleIdentifier</key>
@@ -65,7 +65,7 @@
 		</array>
 	</dict>
 	<key>Description</key>
-	<string>Extension description</string>
+	<string>We believe that anyone should be able to easily leave their opinion anywhere on the internet. ChatterBox is a browser extension / addon that allows you to comment what you want, where you want. </string>
 	<key>ExtensionInfoDictionaryVersion</key>
 	<string>1.0</string>
 	<key>Permissions</key>

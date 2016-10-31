@@ -1,9 +1,10 @@
 {
     "content_scripts": [
+        "jquery.js", 
         "content.js"
     ], 
-    "description": "Extension description", 
-    "creator": "Kango", 
+    "description": "We believe that anyone should be able to easily leave their opinion anywhere on the internet. ChatterBox is a browser extension / addon that allows you to comment what you want, where you want. ", 
+    "creator": "Rivison", 
     "framework_version": "1.8.0 3dc957b83b36", 
     "background_scripts": [
         "main.js"

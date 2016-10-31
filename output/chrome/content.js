@@ -3,12 +3,17 @@
 // @include http://*
 // ==/UserScript==
 
-var colorNumber = 0;
-var colors = ['red', 'green', 'blue'];
+(function($,window,document){
 
-window.setInterval(function() {
-    document.body.style.background = colors[colorNumber++];
-    if(colorNumber > colors.length) {
-        colorNumber = 0;
-    }
-}, 1000);
+	var colorNumber = 0;
+	var colors = ['pink', 'yellow', 'lightblue'];
+
+	window.setInterval(function() {
+		$("body").css("background",colors[colorNumber++]);
+		if(colorNumber > colors.length) {
+			colorNumber = 0;
+		}
+	}, 1000);
+	
+})(__chaterbox_jquery__,window,document);
+

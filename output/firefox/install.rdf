@@ -11,8 +11,8 @@
             </Description>
         </em:targetApplication>
         <em:bootstrap>true</em:bootstrap>
-        <em:description>Extension description</em:description>
-        <em:creator>Kango</em:creator>
+        <em:description>We believe that anyone should be able to easily leave their opinion anywhere on the internet. ChatterBox is a browser extension / addon that allows you to comment what you want, where you want. </em:description>
+        <em:creator>Rivison</em:creator>
         <em:homepageURL>http://chatterbox.rivison.com/</em:homepageURL>
         <em:iconURL>chrome://kango-e65df692-1b3b-4c15-81b9-2da10cef1117/content/icons/icon32.png</em:iconURL>
         

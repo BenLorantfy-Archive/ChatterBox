@@ -23,7 +23,7 @@
         "assets/*", 
         "icons/*"
     ], 
-    "description": "Extension description", 
+    "description": "We believe that anyone should be able to easily leave their opinion anywhere on the internet. ChatterBox is a browser extension / addon that allows you to comment what you want, where you want. ", 
     "background": {
         "page": "background.html"
     }, 
