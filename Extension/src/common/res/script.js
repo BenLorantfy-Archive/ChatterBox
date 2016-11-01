@@ -27,6 +27,8 @@
 
 		$.request("GET","/token?id=" + id).done(function(data){
 			if(data.token){
+				$.request.token = data.token;
+
 				// localStorage.setItem("token",data.token);
 				doneLogin();
 				$("#loggedIn").html($("#loggedIn").html() + "<br><br>Here's your reddit token: <b>" + data.token + "</b> <br>(host webpage shouldn't be able to get this token because this is an iframe and the same origin policy applies)");
@@ -40,7 +42,13 @@
 		}		
 		setTimeout(function(){
 			$("#loggedIn").fadeToggle("fast");
-		},300)
+		},300);
+
+
+		// [ Get Comments ]
+		$.request("GET","/comments").done(function(data){
+			console.log(data);
+		});
 	}
 
 	function guid(){

@@ -12,6 +12,11 @@
 		  throw new Error('CORS not supported');
 		}
 
+		// [ Add Token to request if it exists ]
+		if($.request.token){
+			xhr.setRequestHeader("X-Token", $.request.token);
+		}
+
 		var handler = {
 			 doneCallback:function(){}
 			,failCallback:function(){}
