@@ -8,7 +8,9 @@
 MyExtension.prototype = {
 
     _onCommand: function() {
-        kango.browser.tabs.create({url: 'http://kangoextensions.com/'});
+		kango.browser.tabs.getCurrent(function(tab) {
+			tab.dispatchMessage('BrowserButtonClick');
+		});
     }
 };
 
