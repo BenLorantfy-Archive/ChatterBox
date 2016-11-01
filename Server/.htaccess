@@ -1,0 +1,17 @@
+#
+# This file redirects requests to one php script that manages
+# all the requests itself
+#
+# If this is creating an internal server error,
+# make sure the rewrite module for apache is turned on
+#
+
+# Enable rewriting
+RewriteEngine on
+
+# Don't rewrite certain static files such as stylesheets and javascript
+# RewriteRule \.(js|css|ico|gif|jpg|png|html|ttf|eot|json|mp4|xml)$ - [NC,L]
+
+# Rewrite everything but index.php to index.php
+# This is because if index.php isn't excluded from the match, it will create an infinite loop of redirects
+RewriteRule ^((?!index\.php).)*$ /index.php [NC,L,QSA]

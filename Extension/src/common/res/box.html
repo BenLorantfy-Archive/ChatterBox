@@ -1,0 +1,23 @@
+<body>
+	<style>
+		#box{
+			position:fixed;
+			width:100%;
+			height:100%;
+			background-color:white;
+		}
+	</style>
+	<div id="box">
+		<div id="notLoggedIn" style="display:none">
+			<div id="welcome">Welcome to ChatterBox! Please log into reddit below.</div>
+			<button id="logIntoReddit">Log In</button>
+		</div>
+		<div id="loggedIn" style="display:none;">
+			Comments go here
+		</div>
+		
+	</div>
+	<script src="jquery.js"></script>
+	<script src="request.js"></script>
+	<script src="script.js"></script>
+</body>
