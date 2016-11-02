@@ -4,6 +4,7 @@
 		html,body{
 			margin:0;
 			padding:0;
+			font-family: Lato, Helvetica, Arial, sans-serif;
 		}
 		*{
 			box-sizing: border-box;
@@ -13,7 +14,8 @@
 			width:100%;
 			height:100%;
 			background-color:white;
-			overflow-y: auto;
+			/*overflow-y: auto;*/
+			ovefrlow-y:hidden;
 			padding:20px;
 		}
 		.bubble{
@@ -33,15 +35,21 @@
 			/*border-left:1px solid #F3F3F3;*/
 			border-left:1px solid rgba(0,0,0,0.2);
 		}
+
+		#comments > .comment:first-child{
+			margin-top:-15px;
+		}
+
 		.comment:last-child > .replies{
 			border-left:none;
 		}
 
 		#logo{
-			width:150px;
+			width:200px;
 			display: block;
 			margin:auto;
-			margin-bottom: 10px;
+			margin-top:100px;
+			margin-bottom:20px;
 		}
 
 		.content{
@@ -61,6 +69,79 @@
 			bottom:0;
 			left:-10px;
 			z-index: -1;
+		}
+
+		#form{
+			position: fixed;
+			bottom:0;
+			left:0;
+			background-color: #F3F3F3;
+			padding:10px;
+			width:100%;
+		}
+
+		#commentInput{
+			width:100%;
+			height:100px;
+			border:none;
+			background-color:none;
+			font-family: 'Lato', Helvetica, Arial, sans-serif;
+			padding:10px;
+			border-radius: 15px;
+			font-size:14px;
+			outline:none;
+			display: block;
+		}
+		#postButton{
+			margin-top:10px;
+			width: 100%;
+			padding:10px;
+			background-color:#BF4446;
+			font-size: 16px;
+			font-weight: bold;
+			color:white;
+			text-align: center;
+			border-radius: 5px;
+		}
+		#comments{
+			position: absolute;
+			top:80px; /* height of logo */
+			left: 0;
+			right: 0;
+			bottom: 180px; /* height of form */
+			padding:20px;
+			overflow-y: auto;
+		}
+		#welcome{
+			margin:auto;
+			width:80%;
+			font-size:18px;
+			color:grey;
+			text-align: center;
+			margin-top:10px;
+		}
+		#logIntoReddit{
+			padding:10px;
+			font-size:18px;
+			background-color:#F3F3F3;
+			font-weight: bold;
+			color:grey;
+			text-align: center;
+			width:160px;
+			margin:auto;
+			margin-top:60px;
+			position: relative;
+			overflow:hidden;
+			border:1px solid rgba(0,0,0,0.1);
+			padding-left:40px;
+			cursor: pointer;
+		}
+		#reddit{
+			position: absolute;
+			top:-20px;
+			left: -15px;
+			width:80px;
+			transform: rotate(-30deg);
 		}
 	</style>
 	<script id="comment-template" type="text/x-handlebars-template">
@@ -84,12 +165,17 @@
 	<div id="box">
 		<img id="logo" src="logo.png"></img>
 		<div id="notLoggedIn" style="display:none">
-			<div id="welcome">Welcome to ChatterBox! Please log into reddit below.</div>
-			<button id="logIntoReddit">Log In</button>
+			<div id="welcome">Welcome to ChatterBox! ChatterBox uses reddit for comments. Please log in or signup with reddit below.</div>
+			<div id="logIntoReddit"><img id="reddit" src="reddit.png"></img>Log In</div>
 		</div>
 		<div id="loggedIn" style="display:none;">
 			<div id="comments">Loading...</div>
+			<div id="form">
+				<textarea id="commentInput" placeholder="Type your comment here..."></textarea>
+				<div id="postButton">Post Comment</div>
+			</div>
 		</div>	
+
 	</div>
 	<script src="handlebars.js"></script>
 	<script src="jquery.js"></script>

@@ -11,9 +11,26 @@
 		doneLogin();
 	}
 
+	function popup(url, title, w, h, screenWidth, screenHeight) {
+	    // Fixes dual-screen position                         Most browsers      Firefox
+	    var dualScreenLeft = window.screenLeft != undefined ? window.screenLeft : screen.left;
+	    var dualScreenTop = window.screenTop != undefined ? window.screenTop : screen.top;
+  
+	    var left = ((screenWidth / 2) - (w / 2)) + dualScreenLeft;
+	    var top = ((screenHeight / 2) - (h / 2)) + dualScreenTop;
+	    var newWindow = window.open(url, "_blank", 'scrollbars=yes, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+
+	    // Puts focus on the newWindow
+	    if (window.focus) {
+	        newWindow.focus();
+	    }
+
+	    return newWindow;
+	}
+
 	$("#logIntoReddit").click(function(){
 		var id = guid();
-		var win = window.open("https://www.reddit.com/api/v1/authorize?" + 
+		var win = popup("https://www.reddit.com/api/v1/authorize?" + 
 			"client_id=TElh_zpz1E-Yug&" +
 			"response_type=code&" + 
 			"state=" + id + "&" + 
@@ -21,8 +38,7 @@
 			"redirect_uri=http://localhost:8888/redirect&" + 
 			"duration=permanent&" +
 			"scope=identity"
-		, '_blank', 'location=yes,height=400,width=800,scrollbars=no,status=no');	
-
+		, 'Log Into Reddit', 850, 400, 0, 0);	
 
 
 		$.request("GET","/token?id=" + id).done(function(data){
@@ -37,6 +53,13 @@
 	});
 
 	function doneLogin(){
+		$("#logo").animate({
+			 width:100
+			,"margin-top":-15
+		},500,function(){
+
+		})
+
 		if($("#notLoggedIn").is(":visible")){
 			$("#notLoggedIn").fadeToggle("fast");
 		}		
