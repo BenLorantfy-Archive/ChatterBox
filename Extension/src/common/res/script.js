@@ -1,14 +1,24 @@
 (function(){
 	$.request.host = "http://localhost:8888/";
 
-	var token = localStorage.getItem("token");
+	function getVariables(){
+		var vars = {};
+		if(document.location.toString().indexOf('?') !== -1) {
+		    var query = document.location
+		                   .toString()
+		                   // get the query string
+		                   .replace(/^.*?\?/, '')
+		                   // and remove any existing hash string (thanks, @vrijdenker)
+		                   .replace(/#.*$/, '')
+		                   .split('&');
 
-	if(!token){
-		var iframe = $("#oauthIframe");
-		$("#notLoggedIn").show();
-
-	}else{
-		doneLogin();
+		    for(var i=0, l=query.length; i<l; i++) {
+		       var aux = decodeURIComponent(query[i]).split('=');
+		       vars[aux[0]] = aux[1];
+		    }
+		}
+		
+		return vars;
 	}
 
 	function popup(url, title, w, h, screenWidth, screenHeight) {
@@ -28,6 +38,22 @@
 	    return newWindow;
 	}
 
+	// [ Loading dots ]
+	setInterval(function(){
+		var text = $("#commentsMessage").text();
+		if(text == "Loading..."){
+			text = "Loading   ";
+		}else if(text == "Loading   "){
+			text = "Loading.  "
+		}else if(text == "Loading.  "){
+			text = "Loading.. ";
+		}else if(text == "Loading.. "){
+			text = "Loading...";
+		}
+		$("#commentsMessage").text(text);
+	},500);
+
+	var getVars = getVariables();
 	$("#logIntoReddit").click(function(){
 		var id = guid();
 		var win = popup("https://www.reddit.com/api/v1/authorize?" + 
@@ -37,22 +63,39 @@
 			// "redirect_uri=http://chatterbox.rivison.com/oauth&" + 
 			"redirect_uri=http://localhost:8888/redirect&" + 
 			"duration=permanent&" +
-			"scope=identity"
-		, 'Log Into Reddit', 850, 400, 0, 0);	
+			"scope=identity,submit"
+		, 'Log Into Reddit', 850, 400, getVars["width"], getVars["height"]);	
 
 
 		$.request("GET","/token?id=" + id).done(function(data){
 			if(data.token){
 				$.request.token = data.token;
 
-				// localStorage.setItem("token",data.token);
+				window.localStorage.setItem("token",JSON.stringify(data.token));
 				doneLogin();
 				// $("#loggedIn").html($("#loggedIn").html() + "<br><br>Here's your reddit token: <b>" + data.token + "</b> <br>(host webpage shouldn't be able to get this token because this is an iframe and the same origin policy applies)<br><br>Loading Discussions...");
 			}
 		})
 	});
 
+	var currentDiscussionId = null;
+
+	// [ Post Comment ]
+	$("#postButton").click(function(){
+		if(currentDiscussionId){
+			var content = $("#commentInput").val();
+			$.request("POST","/discusions/" + currentDiscussionId + "/comments",{ "content":content }).done(function(){
+				alert("success");
+			})
+		}else{
+			alert("No discusion");
+		}
+		
+	})
+
 	function doneLogin(){
+		
+
 		$("#logo").animate({
 			 width:100
 			,"margin-top":-15
@@ -72,15 +115,35 @@
 		Handlebars.registerPartial( "comment", $( "#comment-template" ).html() );
 
 		// [ Get Comments ]
-		$.request("GET","/discusions?link=" + encodeURI("http://www.vox.com/world/2016/11/1/13487322/donald-trump-russia-agent-hack")).done(function(discusions){
-			var comments = discusions[0].comments;
+		$.request("GET","/discusions?link=" + encodeURI(getVars["link"])).done(function(discusions){
+			var hasComments = true;
+			var hasDiscussions = true;
+			if(discusions.length == 0){
+				hasComments = false;
+				hasDiscussions = false;
+			}else if(!discusions[0].comments){
+				currentDiscussionId = discusions[0].id;
+				hasComments = false;
+			}else if(discusions[0].comments.length == 0){
+				currentDiscussionId = discusions[0].id;
+				hasComments = false;
+			}
 
-			$("#comments").empty();
-			$.each(comments,function(i,comment){
-				var html = template(comment);
-				console.log(comment.content);
-				$("#comments").append(html);
-			})
+			if(hasComments){
+				var comments = discusions[0].comments;
+				currentDiscussionId = discusions[0].id;
+
+				$("#comments").empty();
+				$.each(comments,function(i,comment){
+					var html = template(comment);
+					console.log(comment.content);
+					$("#comments").append(html);
+				})
+			}else{
+				$("#commentsMessage").text("No Comments Yet");
+			}
+
+
 
 			// $("#loggedIn").text(JSON.stringify(data));
 		});
@@ -91,5 +154,20 @@
 		    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
 		    return v.toString(16);
 		});
+	}
+
+
+	// [ Try to get token ]
+	try{
+		$.request.token = JSON.parse(window.localStorage.getItem("token"));
+	}catch(e){
+
+	}
+
+	if(!$.request.token){
+		var iframe = $("#oauthIframe");
+		$("#notLoggedIn").show();
+	}else{
+		doneLogin();
 	}
 })();

@@ -15,7 +15,7 @@
 			height:100%;
 			background-color:white;
 			/*overflow-y: auto;*/
-			ovefrlow-y:hidden;
+			overflow-y:hidden;
 			padding:20px;
 		}
 		.bubble{
@@ -102,6 +102,7 @@
 			color:white;
 			text-align: center;
 			border-radius: 5px;
+			cursor: pointer;
 		}
 		#comments{
 			position: absolute;
@@ -143,6 +144,14 @@
 			width:80px;
 			transform: rotate(-30deg);
 		}
+		#commentsMessage{
+			font-size:30px;
+			color:lightgrey;
+			text-align: center;
+			width:100%;
+			margin-top:100px;
+		}
+
 	</style>
 	<script id="comment-template" type="text/x-handlebars-template">
 	  <div class="comment">
@@ -169,7 +178,7 @@
 			<div id="logIntoReddit"><img id="reddit" src="reddit.png"></img>Log In</div>
 		</div>
 		<div id="loggedIn" style="display:none;">
-			<div id="comments">Loading...</div>
+			<div id="comments"><div id="commentsMessage">Loading...</div></div>
 			<div id="form">
 				<textarea id="commentInput" placeholder="Type your comment here..."></textarea>
 				<div id="postButton">Post Comment</div>

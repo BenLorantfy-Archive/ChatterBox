@@ -1,5 +1,7 @@
 (function($,window,document){
 	$.request = function(verb,path,data){
+		var json = JSON.stringify(data);
+
 		// [ Format slashes ]
 		var host = $.request.host;
 		if(host[host.length - 1] == "/"){
@@ -44,7 +46,7 @@
 			handler.failCallback(event);
 		}
 
-		xhr.send();
+		xhr.send(json);
 
 		return handler;
 	}

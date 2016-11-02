@@ -125,6 +125,12 @@ function error($code,$message){
 	];
 }
 
+function success(){
+	return [
+		"success" => true
+	];
+}
+
 $router->map( 'GET', '/discusions', function() {
 	$discusions = [];
 
@@ -151,11 +157,11 @@ $router->map( 'GET', '/discusions', function() {
 		];
 	}
 
-	$url = "https://www.reddit.com/comments/" . $discusions[0]["id"] . ".json";
+	$url = "https://www.reddit.com/comments/" . $discusions[0]["id"] . ".json?cache=124";
 	$response = Requests::get($url);
 	$response = json_decode($response->body,true);
 	$comments = $response[1]["data"]["children"];
-	// return $comments;
+	return $response;
 
 
 	// [ Adds comments to first discussion ]
@@ -172,6 +178,45 @@ $router->map( 'GET', '/discusions', function() {
 	}	
 
 	return $discusions;
+});
+
+$router->map( 'POST', '/discusions/[a:postId]/comments', function($postId,$comment) {
+
+	// [ Input Validation ]
+	if(!isset($comment["content"])) return error("MissingComment","Comment is missing");
+	if($comment["content"] == "") return error("EmptyComment","Comment is empty");
+
+	$token = getToken();
+
+	// [ Add authorization header ]
+	$headers = [
+    	'Authorization' => 'bearer ' . $token
+    ];
+	$options = [];
+
+	// [ Comment data ]
+	// t3_ means Link. see: https://www.reddit.com/dev/api/#fullnames
+	$data = [
+		 "api_type" => "json"
+		,"thing_id" => 't3_' . $postId
+		,"text" => $comment["content"]
+	];
+
+	// Requests using oauth have to be made to oauth.reddit.com
+	// See: https://github.com/reddit/reddit/wiki/OAuth2-Quick-Start-Example#curl-example
+	$response = Requests::post('https://oauth.reddit.com/api/comment', $headers, $data, $options);
+	$response = json_decode($response->body,true);
+
+	if(isset($response["json"]["errors"][0])){
+		return error("RedditApiResponseError",$response["json"]["errors"][0]);
+	}
+
+	if(!isset($response["json"]["data"]["things"][0])){
+		return $response;
+		return error("RedditApiResponseErrorUnknown","Failed to create comment");
+	}
+
+	return success();
 });
 
 function getReplies($comment, $uglyComment){
@@ -226,7 +271,9 @@ function getToken(){
 // [ Process Request ]
 $match = $router->match();
 if( $match && is_callable( $match['target'] ) ) {
-	$ret = call_user_func_array( $match['target'], $match['params'] ); 
+	$body = json_decode(file_get_contents('php://input'),true);
+
+	$ret = call_user_func_array( $match['target'], array_merge($match['params'],[$body]) ); 
 	if($ret !== NULL){
 		echo json_encode($ret);
 	}
