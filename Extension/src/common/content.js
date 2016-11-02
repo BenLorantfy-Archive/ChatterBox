@@ -8,7 +8,7 @@
 	var url = kango.io.getResourceUrl('res/box.html');
 	// $.get(url,function(box){
 		
-		var width = 400;
+		var width = 500;
 		var iframe = $("<iframe id = '__chatterbox__iframe__'></iframe>");
 		$("body").prepend(iframe);
 		iframe.css({
