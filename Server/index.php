@@ -1,8 +1,15 @@
 <?php
 
 // [ Allow CORS ]
-header('Access-Control-Allow-Origin: *'); 
-header('Access-Control-Allow-Methods: GET, POST, DELETE');
+if (isset($_SERVER['HTTP_ORIGIN'])) {
+    header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+    header('Access-Control-Allow-Credentials: true');    
+    header("Access-Control-Allow-Methods: GET, POST, OPTIONS"); 
+}   
+// Access-Control headers are received during OPTIONS requests
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    header("Access-Control-Allow-Headers: " . apache_request_headers()["Access-Control-Request-Headers"]);
+}
 
 // [ Library to avoid the syntax hell that is cURL ]
 include("lib/Requests.php");
@@ -161,7 +168,7 @@ $router->map( 'GET', '/discusions', function() {
 	$response = Requests::get($url);
 	$response = json_decode($response->body,true);
 	$comments = $response[1]["data"]["children"];
-	return $response;
+// 	return $response;
 
 
 	// [ Adds comments to first discussion ]
