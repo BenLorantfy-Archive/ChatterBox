@@ -84,9 +84,15 @@
 	$("#postButton").click(function(){
 		if(currentDiscussionId){
 			var content = $("#commentInput").val();
-			$.request("POST","/discusions/" + currentDiscussionId + "/comments",{ "content":content }).done(function(){
-				alert("success");
-			})
+			if(content>'' && $('#postButton').html()!='Posting...'){
+				$('#postButton').html('Posting...');
+				$.request("POST","/discusions/" + currentDiscussionId + "/comments",{ "content":content }).done(function(){
+					//alert("success");
+					$('#postButton').html('Posted!');
+					$("#commentInput").val('');
+					setTimeout(function(){ $('#postButton').html('Post Comment'); }, 2000);
+				})
+			}			
 		}else{
 			alert("No discusion");
 		}
@@ -171,3 +177,11 @@
 		doneLogin();
 	}
 })();
+
+function focusOnMeDaddy(){
+	$('#commentInput').addClass('bigBoy');
+}	
+
+function unfocusOnMeLikeYouAlwaysDo(){
+	$('#commentInput').removeClass('bigBoy');
+}	
