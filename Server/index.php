@@ -153,7 +153,15 @@ $router->map( 'GET', '/discusions', function() {
 
 	$response = Requests::get($url);
 	$response = json_decode($response->body,true);
-	$posts = $response["data"]["children"];
+	if(isset($response[0])){
+		$posts = $response[0]["data"]["children"];
+	}else{
+		$posts = $response["data"]["children"];
+	}
+	
+
+	// return $response;
+	// return var_dump($response);
 
 	// [ Gets all the reddit posts for this link ]
 	foreach ($posts as $post) {
@@ -164,11 +172,19 @@ $router->map( 'GET', '/discusions', function() {
 		];
 	}
 
-	$url = "https://www.reddit.com/comments/" . $discusions[0]["id"] . ".json?cache=124";
+	// return $discusions;
+
+	// $url = "https://www.reddit.com/comments/5av043.json";
+	$url = "https://www.reddit.com/comments/" . $discusions[0]["id"] . ".json";
 	$response = Requests::get($url);
+	
+	
+
 	$response = json_decode($response->body,true);
+	// return $response;
+
 	$comments = $response[1]["data"]["children"];
-// 	return $response;
+	
 
 
 	// [ Adds comments to first discussion ]
