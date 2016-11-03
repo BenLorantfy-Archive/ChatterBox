@@ -5,6 +5,7 @@
 			margin:0;
 			padding:0;
 			font-family: Lato, Helvetica, Arial, sans-serif;
+			font: -apple-system-body;
 		}
 		*{
 			box-sizing: border-box;
@@ -20,20 +21,22 @@
 		}
 		.bubble{
 			margin-bottom:10px;
-			padding:10px;
-			padding-top:3px;
-			padding-bottom: 3px;
+			padding:20px;
+			padding-top:6px;
+			padding-bottom: 6px;
 			border-radius: 20px;
 			background-color:#F3F3F3;
 			font-family: 'Lato', Helvetica, Arial, sans-serif;
 			font-size:14px;
 			width:400px;
 			position: relative;
+			width: auto;
+			
 		}
 		.replies{
-			padding-left:10px;
+			padding-left:20px;
 			/*border-left:1px solid #F3F3F3;*/
-			border-left:1px solid rgba(0,0,0,0.2);
+			border-left:2px solid rgba(0,0,0,0.03);
 		}
 
 		#comments > .comment:first-child{
@@ -50,6 +53,8 @@
 			margin:auto;
 			margin-top:100px;
 			margin-bottom:20px;
+			position: relative;
+			z-index: 99;
 		}
 
 		.content{
@@ -59,8 +64,10 @@
 		.author{
 			color:grey;
 			margin-top:7px;
-			font-size:16px;
-			margin-bottom:-5px;
+			font-size:12px;
+			margin-bottom:-9px;
+			color: #BD4549;
+			
 		}
 
 		.pointer{
@@ -78,11 +85,16 @@
 			background-color: #F3F3F3;
 			padding:10px;
 			width:100%;
+			background-color: rgba(243, 243, 243, 0.74);
+			background-color: rgba(243, 243, 243, 1);
+			-webkit-backdrop-filter: blur(5px);
+			box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
 		}
 
 		#commentInput{
 			width:100%;
-			height:100px;
+			height:70px;
+			height: 40px;
 			border:none;
 			background-color:none;
 			font-family: 'Lato', Helvetica, Arial, sans-serif;
@@ -91,6 +103,14 @@
 			font-size:14px;
 			outline:none;
 			display: block;
+			background-color: rgba(255, 255, 255, 0.72);
+			background-color: rgba(255, 255, 255, 1);
+			-webkit-backdrop-filter: blur(5px);
+			transition: all 0.2s;
+			resize: none;
+		}
+		.pushypushy{
+			height: 250px;
 		}
 		#postButton{
 			margin-top:10px;
@@ -103,15 +123,25 @@
 			text-align: center;
 			border-radius: 5px;
 			cursor: pointer;
+			transition: all 0.2s;
 		}
-		#comments{
+		#postButton:hover{
+			background-color:#ad393b;
+
+		}
+		#commentsHolder{
 			position: absolute;
 			top:80px; /* height of logo */
 			left: 0;
 			right: 0;
 			bottom: 180px; /* height of form */
 			padding:20px;
+			bottom: 0px;
+			top: 0px;
 			overflow-y: auto;
+		}
+		.commentpusher{
+			height: 100px;
 		}
 		#welcome{
 			margin:auto;
@@ -151,15 +181,81 @@
 			width:100%;
 			margin-top:100px;
 		}
-
+		.grad{
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			width: 100%;
+			height: 130px;
+			background-image: url(whitegrad.png);
+			background-position: center center;
+			background-size: 100% 100%;
+			z-index: 9;
+			pointer-events: none;
+			border-top: 60px solid white;
+		}
+		
+		.bigBoy{
+			height: 200px !important;
+		}
+		.callMeBack{
+			display: inline-block;
+			/* float: right; */
+			background-color: #BD4549;
+			background-color: rgba(0,0,0,0.1);
+			color: white;
+			font-size: 10px;
+			font-weight: bold;
+			padding: 5px 10px;
+			border-radius: 5px;
+			text-align: center;
+			cursor: pointer;
+			float: right;
+			transition: all 0.2s;
+			margin-top: 10px;
+			margin-left: 5px;
+			margin-bottom: 5px;
+			
+		}
+		
+		.callMeBack:hover{
+			background-color: #BD4549;
+			color: white;
+		}
+		
+		@-webkit-keyframes spaceboots {
+			0% { -webkit-transform: translate(2px, 1px) rotate(0deg); }
+			10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); }
+			20% { -webkit-transform: translate(-3px, 0px) rotate(1deg); }
+			30% { -webkit-transform: translate(0px, 2px) rotate(0deg); }
+			40% { -webkit-transform: translate(1px, -1px) rotate(1deg); }
+			50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); }
+			60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); }
+			70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); }
+			80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); }
+			90% { -webkit-transform: translate(2px, 2px) rotate(0deg); }
+			100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }
+		}
+		#logo:hover, .callMeBack:hover{
+			-webkit-animation-name: spaceboots;
+			-webkit-animation-duration: 0.8s;
+			-webkit-animation-duration: 1.2s;
+			-webkit-transform-origin:50% 50%;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-timing-function: linear;
+		}
+		
 	</style>
 	<script id="comment-template" type="text/x-handlebars-template">
+		{{#if content}}
 	  <div class="comment">
 	  	
 	  	<div class="bubble">
-	  		<div class="author">{{author}} says</div>
+		  	<div class="callMeBack">Reply</div>
+	  		<div class="author"><b>{{author}}</b>: </div>
 	  		<div class="content">
 	  			{{{content}}}
+	  			
 	  		</div>
 	  		<img class="pointer" src="pointer.png"></img>
 	  	</div>   
@@ -169,18 +265,27 @@
 		    {{/replies}}
 	    </div>
 	  </div>
+	  {{/if}}
 	</script>
 
 	<div id="box">
+		
+		<div class="grad"></div>
 		<img id="logo" src="logo.png"></img>
 		<div id="notLoggedIn" style="display:none">
 			<div id="welcome">Welcome to ChatterBox! ChatterBox uses reddit for comments. Please log in or signup with reddit below.</div>
 			<div id="logIntoReddit"><img id="reddit" src="reddit.png"></img>Log In</div>
 		</div>
 		<div id="loggedIn" style="display:none;">
-			<div id="comments"><div id="commentsMessage">Loading...</div></div>
+			<div id="commentsHolder">
+				<div class="commentpusher"></div>
+				<span id="comments">
+					<div id="commentsMessage">Loading...</div>
+				</span>
+				<div class="pushypushy"></div> 
+			</div>
 			<div id="form">
-				<textarea id="commentInput" placeholder="Type your comment here..."></textarea>
+				<textarea id="commentInput" placeholder="Type your comment here..." onfocus="focusOnMeDaddy();" onblur="unfocusOnMeLikeYouAlwaysDo();"></textarea>
 				<div id="postButton">Post Comment</div>
 			</div>
 		</div>	
