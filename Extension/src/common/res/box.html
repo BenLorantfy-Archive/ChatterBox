@@ -249,24 +249,24 @@
 	</style>
 	<script id="comment-template" type="text/x-handlebars-template">
 		{{#if content}}
-	  <div class="comment">
-	  	
-	  	<div class="bubble">
-		  	<div class="callMeBack">Reply</div>
-	  		<div class="author"><b>{{author}}</b>: </div>
-	  		<div class="content">
-	  			{{{content}}}
-	  			
-	  		</div>
-	  		<img class="pointer" src="pointer.png"></img>
-	  	</div>   
-	    <div class="replies">
-		    {{#replies}}
-		    	{{> comment }}
-		    {{/replies}}
-	    </div>
-	  </div>
-	  {{/if}}
+		  <div class="comment">
+		  	
+		  	<div class="bubble">
+			  	<div class="callMeBack">Reply</div>
+		  		<div class="author"><b>{{author}}</b>: </div>
+		  		<div class="content">
+		  			{{{content}}}
+		  			
+		  		</div>
+		  		<img class="pointer" src="pointer.png"></img>
+		  	</div>   
+		    <div class="replies">
+			    {{#replies}}
+			    	{{> comment }}
+			    {{/replies}}
+		    </div>
+		  </div>
+		{{/if}}
 	</script>
 
 	<div id="box">
@@ -286,7 +286,7 @@
 				<div class="pushypushy"></div> 
 			</div>
 			<div id="form">
-				<textarea id="commentInput" placeholder="Type your comment here..." onfocus="focusOnMeDaddy();" onblur="unfocusOnMeLikeYouAlwaysDo();"></textarea>
+				<textarea id="commentInput" placeholder="Type your comment here..."></textarea>
 				<div id="postButton">Post Comment</div>
 			</div>
 		</div>	
